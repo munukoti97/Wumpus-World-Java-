@@ -122,7 +122,7 @@ public class MyAgent implements Agent {
 				}
 
 			}
-//maniknata demo 
+//rahul demo
 		} else {
 			mapArray[transformX][transformY] = 1;
 

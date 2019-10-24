@@ -122,7 +122,7 @@ public class MyAgent implements Agent {
 				}
 
 			}
-
+//maniknata demo 
 		} else {
 			mapArray[transformX][transformY] = 1;
 

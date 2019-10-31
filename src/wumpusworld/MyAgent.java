@@ -15,6 +15,7 @@ public class MyAgent implements Agent {
 	int[] b = new int[10];
     int pbb=0;
     int pd=0;
+    int path1=0;
 	/**
 	 * Creates a new instance of your solver agent.
 	 * 
@@ -118,8 +119,10 @@ public class MyAgent implements Agent {
 
 		int k;
 
-		if (x == fx && y == fd) {
-			if (minscore >= score) {
+		if (x == fx && y == fd) 
+		{
+			if (minscore >= score) 
+			{
 				minscore = score;
 				k1 = a[0];
 				System.out.println("98745632123654");
@@ -127,6 +130,12 @@ public class MyAgent implements Agent {
 				for(int i=0;i<=c1;i++)
 					b[i]=a[i];
 				pd=c1;
+				if(c1>0)
+				{   
+					k=1;
+					fp=c1;
+					path=1;
+				}
 				System.out.println(pd);
 			}
 		}
@@ -227,8 +236,20 @@ public class MyAgent implements Agent {
 				pb = 1;
 				l = 1;
 				t=1;
-			  for(int i=0;i<=c1;i++)				
-				switch (a[i]) {
+				System.out.println("na bondhaasdfghjksdfghjk");
+				for(int i=0;i<=c1;i++)
+					{b[i]=a[i];
+					System.out.println(a[i]);
+					}
+				System.out.println(c1);
+				pd=c1;
+				if(c1>0)
+				{   
+					k=1;
+					fp=c1;
+					path=1;
+				}				
+				switch (b[0]) {
 				case 1:
 					direction(1);
 					break;
@@ -268,7 +289,17 @@ public class MyAgent implements Agent {
 			if (t == 3 && l != 1 && minvalue < 6) {
 				pb = 1;
 				t=1;
-				
+				System.out.println("na bondhaasdfghjksdfghjk");
+				for(int i=0;i<=c1;i++)
+					b[i]=a[i];
+				pd=c1;
+				if(c1>0)
+				{   
+					k=1;
+					fp=c1;
+					path=1;
+				}	
+					
 				switch (a[0]) {
 				case 1:
 					direction(1);
@@ -308,7 +339,7 @@ public class MyAgent implements Agent {
 
 		else 
 		{
-			if (map[x][y] != 3 && map[x][y] != 7 && map[x][y] != -3   && pb!=1) {
+			if (map[x][y] != 3 && map[x][y] != 7 && map[x][y] != -3   && pb!=1 && map[x][y] != -2) {
 				if (move != 1 && (y + 1) <= 3 && pb!=1 && c1<6) {
 
 					// movie right
@@ -388,7 +419,15 @@ public class MyAgent implements Agent {
 	}
 
 	public void path(int[][] map, int[] a, int x, int y, int c1, int move) {
-
+        
+		if(!w.isVisited(y+1 , 4-x))
+		{
+			System.out.println("na dengu");
+			System.out.println(x);
+			System.out.println(y);
+			System.out.println(map[x][y]);
+		}
+		if(x<=3 && y<=3 && x>=0 && y>=0)
 		if (map[x][y] == 0  || (!w.isVisited(y+1 , 4-x) && map[x][y]==1)) 
 		{
 
@@ -401,7 +440,7 @@ public class MyAgent implements Agent {
 				fp=c1;
 				path=1;
 			}
-			System.out.println("98745632123654");
+			System.out.println("9874563212cffchgvjhkl;3654");
 			System.out.println(c1);
 			for(int i=0;i<=c1;i++)
 				System.out.println(a[i]);
@@ -445,7 +484,7 @@ public class MyAgent implements Agent {
 		else {
 			if(c1<5)
 			if(x<=3 && y<=3 && x>=0 && y>=0)
-			if (map[x][y] % 2 != 0 && map[x][y] != 3 && map[x][y] != 7 && map[x][y] != -3 && pa!=1 && map[x][y]!=-2 ) {
+			if ((map[x][y] % 2 != 0 || map[x][y]<0) && map[x][y] != 3 && map[x][y] != 7 && map[x][y] != -3 && pa!=1 && map[x][y]!=-2 ) {
 				 System.out.println("dfgh");
 				if (move != 1 && (y + 1) <= 3  && pa!=1 && c1<5) {
 
@@ -499,7 +538,7 @@ public class MyAgent implements Agent {
 
 						c1++;
 						a[c1] = 3;
-						System.out.println(c1);
+						
 						path(map, a, x - 1, y, c1, 4);
 						a[c1] = 0;
 						c1--;
@@ -517,6 +556,9 @@ public class MyAgent implements Agent {
 
 						c1++;
 						a[c1] = 4;
+						System.out.println("asdfghjkl;lsdfghjkl;dfghjkl");
+						System.out.println(c1);
+						System.out.println("asdfghjklsdfghjkdfghjk");
 						path(map, a, x + 1, y, c1, 3);
 						a[c1] = 0;
 						c1--;
@@ -760,12 +802,12 @@ public class MyAgent implements Agent {
 								if (pa != 1)
 									for (int i = 0; i < 4; i++)
 										for (int j = 0; j < 4; j++)
-											if (map[i][j] == 0)
+											if (!w.isVisited(i+1, j+1))
 												count++;
 								if (count <= 2) {
 									for (int i = 0; i < 4; i++)
 										for (int j = 0; j < 4; j++)
-											if (map[i][j] == 0) {
+											if (!w.isVisited(i+1, j+1)) {
 												minscore = 100;
 												pathDestination(map, a, transformX, transformY, 0, 0, 0, i, j);
 												int cur_direction = w.getDirection();
@@ -960,7 +1002,11 @@ public class MyAgent implements Agent {
 								}
 							}
 						}
-					
+					if(x==3 && y==0)
+					{
+						direction(1);
+						return;
+					}
 	
 					for(int i=0;i<4;i++)
 						{
@@ -977,6 +1023,7 @@ public class MyAgent implements Agent {
 							wumpus = 1;
 							map[x][y] = 1;
 							arrow(d);
+							direction(4);
 							for (int i = 0; i < 4; i++)
 								for (int j = 0; j < 4; j++) {
 									if (map[i][j] == 3  || map[i][j]==-5 )
@@ -984,6 +1031,12 @@ public class MyAgent implements Agent {
 									if (map[i][j] == 7)
 										map[i][j] = 2;
 								}
+							for(int i=0;i<4;i++)
+							{
+								for(int j=0;j<4;j++)
+									System.out.print(map[i][j]);
+								System.out.println();
+							}
 							return ;	
 				
 					}
@@ -1173,62 +1226,58 @@ public class MyAgent implements Agent {
 								if (pa != 1)
 									for (int i = 0; i < 4; i++)
 										for (int j = 0; j < 4; j++)
-											if (map[i][j] == 0)
+											if (!w.isVisited(i+1, j+1))
 												count++;
 								if (count <= 2) {
 									for (int i = 0; i < 4; i++)
 										for (int j = 0; j < 4; j++)
-											if (map[i][j] == 0) {
+											if (!w.isVisited(i+1, j+1)) {
 												minscore = 100;
-												int cur_direction2 = w.getDirection();
+												
 												pathDestination(map, a, x, y, -1, 0, 0, i, j);
 
-												switch (k1) {
-												case 1: // right
-													directionIntoRequired(cur_direction2, 1);
-													w.doAction(World.A_MOVE);
+											      switch (b[0]) {
+												case 1:
+													direction(1);
 													break;
 												case 2: // left
-													directionIntoRequired(cur_direction2, 3);
-													w.doAction(World.A_MOVE);
+													direction(2);
 													break;
 												case 3: // up
-													directionIntoRequired(cur_direction2, 0);
-													w.doAction(World.A_MOVE);
+													direction(3);
 													break;
 												case 4: // down
-													directionIntoRequired(cur_direction2, 2);
-													w.doAction(World.A_MOVE);
+													direction(4);
 													break;
 												case 5: // shoot
-													directionIntoRequired(cur_direction2, 1);
+												
 
 													w.doAction(World.A_SHOOT);
 													break;
 												case 6:
-													directionIntoRequired(cur_direction2, 3);
+												
 													w.doAction(World.A_SHOOT);
 													break;
 												case 7:
-													directionIntoRequired(cur_direction2, 0);
+													
 													w.doAction(World.A_SHOOT);
 													break;
 												case 8:
-													directionIntoRequired(cur_direction2, 2);
+										
 													w.doAction(World.A_SHOOT);
 													break;
 												default: // random
 													break;
 												}
-
-												break;
+											
+												
 											}
 
 								} else if (pa != 1) {
 									minvalue = 100;
 									pb = 0;
 									t = 1;
-									pathbreeze(map, a, x, y, 0, 0);
+									pathbreeze(map, a, x, y, -1, 0);
 								}
 							}
 						}
@@ -1242,11 +1291,7 @@ public class MyAgent implements Agent {
 		int a[] = new int[16];
 
 		map[x][y] = -4;
-		System.out.println("path");
-		System.out.println(path);
 		
-		
-        System.out.println("khvjbvhjbvjhbhcrdbfhddchjfhebhvhjvmjnddbvnsdvbjhdgsjvhjdsbvasdfghjklasdfghjkl");
 		for(int i=0;i<4;i++)
 		{
 			for(int j=0;j<4;j++)
@@ -1271,9 +1316,10 @@ public class MyAgent implements Agent {
 					X = x - 1;
 					Y = y;
 				}
-				if(map[x-1][y]==-2)
-					count++;
+				
 			}
+			if(map[x-1][y]==-2)
+				count++;
 		}
 		if (y + 1 <= 3) 
 		{
@@ -1291,9 +1337,10 @@ public class MyAgent implements Agent {
 					Y = y + 1;
 
 				}
-				if(map[x][y+1]==-2)
-					count++;
+			
 			}
+			if(map[x][y+1]==-2)
+				count++;
 		}
 		if (x + 1 <= 3) 
 		{
@@ -1309,9 +1356,10 @@ public class MyAgent implements Agent {
 					x = x + 1;
 					Y = y;
 				}
-				if(map[x+1][y]==-2)
-					count++;
+				
 			}
+			if(map[x+1][y]==-2)
+				count++;
 		}
 		if (y - 1 >= 0) 
 		{
@@ -1327,9 +1375,10 @@ public class MyAgent implements Agent {
 					X = x;
 					Y = y - 1;
 				}
-				if(map[x][y-1]==-2)
-					count++;
+				
 			}
+			if(map[x][y-1]==-2)
+				count++;  
 		}
 		System.out.println(count);
 		if (count == 1) {
@@ -1468,15 +1517,11 @@ public class MyAgent implements Agent {
 			}
 					
 	}
-		for(int i=0;i<4;i++)
-		{
-			for(int j=0;j<4;j++)
-				System.out.print(map[i][j]);
-			System.out.println();
-		}
-		System.out.println("fghjasdfghj");
+		
+		System.out.println("before d");
 		System.out.println(d);
-		System.out.println("fghj");
+		System.out.println("after d");
+		System.out.println(t1);
        
 		switch (d) {
 		           
@@ -1497,17 +1542,18 @@ public class MyAgent implements Agent {
 			count = 0;
 			System.out.println("zsdfghjkldfghj");
 			path(map, a, x, y, -1, 0);
-			System.out.println("zsdfghjkldfghj");
+			System.out.println("pa");
+			System.out.println(pa);
 			if (pa != 1)
 				for (int i = 0; i < 4; i++)
 					for (int j = 0; j < 4; j++)
-						if (map[i][j] == 0)
+						if (!w.isVisited(i+1, j+1))
 							count++;
-			System.out.println(map[2][1]);
+
 			if (count <= 2 && pa!=1) {
 				for (int i = 0; i < 4; i++)
 					for (int j = 0; j < 4; j++)
-						if (map[i][j] == 0) {
+						if (!w.isVisited(i+1, j+1)) {
 							minscore = 100;
 							System.out.println(map[2][1]);
 							System.out.println("zsdfghjkldfghj");
@@ -1719,6 +1765,7 @@ public class MyAgent implements Agent {
 							wumpus = 1;
 							map[x][y] = 1;
 							arrow(d);
+							
 							for (int i = 0; i < 4; i++)
 								for (int j = 0; j < 4; j++) {
 									if (map[i][j] == 3  || map[i][j]==-5 )
@@ -1730,6 +1777,7 @@ public class MyAgent implements Agent {
 				
 					}
 						
+					
 						if (count == 1) {
 							System.out.println("dfghj");
 							wumpus = 1;
@@ -1888,17 +1936,17 @@ public class MyAgent implements Agent {
 								if (pa != 1)
 									for (int i = 0; i < 4; i++)
 										for (int j = 0; j < 4; j++)
-											if (map[i][j] == 0)
+											if (!w.isVisited(i+1, j+1))
 												count++;
 								if (count <= 2) {
 									for (int i = 0; i < 4; i++)
 										for (int j = 0; j < 4; j++)
-											if (map[i][j] == 0) {
+											if (!w.isVisited(i+1, j+1)) {
 												minscore = 100;
 												int cur_direction2 = w.getDirection();
 												pathDestination(map, a, x, y, -1, 0, 0, i, j);
 
-												switch (k1) {
+												switch (b[0]) {
 												case 1: // right
 													directionIntoRequired(cur_direction2, 1);
 													w.doAction(World.A_MOVE);
@@ -1966,57 +2014,110 @@ public class MyAgent implements Agent {
 
 		int transformX = 4 - cY;
 		int transformY = cX - 1;
-
-		w.doAction(World.A_GRAB);
-
+         for(int i=0;i<=fp;i++)
+        	 System.out.print(fp);
+	    if(path==1) {
+	    	if(k<=(fp))
+				direction(b[k]);
+	    	System.out.println("nsbongdsdha ");
+	    	for(int i=0;i<4;i++)
+			{
+				for(int j=0;j<4;j++)
+					System.out.print(map[i][j]);
+				System.out.println();
+			}
+			k++;
+			if(k==(fp+1)) {
+				path=0;
+				System.out.println(k);
+				System.out.println("path is zero ");
+			k=1;}
+	    	
+	    }
+	    else
+	    {
+	    	if(w.hasGlitter(cX, cY) && w.hasBreeze(cX, cY))
+	    	{
+	    		w.doAction(World.A_GRAB);
+			    return;
+	    	}
 		if (w.hasBreeze(cX, cY) && w.hasStench(cX, cY)) {
 			if (wumpus == 0)
 				breezeAndStrenchMethod(map, cX, cY, transformX, transformY);
 			else
 				breezeMethod(map, cX, cY, transformX, transformY);
-		} else if (w.hasBreeze(cX, cY) && map[transformX][transformY]!=-4) {
+		} else if (w.hasBreeze(cX, cY) && map[transformX][transformY]!=-4 && map[transformX][transformY]!=-2) {
 			breezeMethod(map, cX, cY, transformX, transformY);
 		} else if (w.hasStench(cX, cY)) {
 			strenchMethod(map, cX, cY, transformX, transformY);
-		} else if (w.hasGlitter(cX, cY)) {
+		} else if (w.hasGlitter(cX, cY) ) {
 			w.doAction(World.A_GRAB);
 			return;
 		} else if (w.isInPit()) {
+			int dir=0;
+			int[] a = new int[50];
+			map[transformX][transformY]=-2;
 			
 			w.doAction(World.A_CLIMB);
+			if(transformY + 1 <=3)
+				if(!w.isVisited(cX+1 , cY) )
+					{
+					dir=1;
+					direction(1);
+					}
+			if(dir!=1)
+			if(transformY - 1 >= 0 )
+				if((!w.isVisited(cX-1 , cY)) )
+					{
+					dir=1;
+					direction(2);
+					}
+			if(dir!=1)	
+			if(transformX - 1 >= 0 )
+				if(!w.isVisited(cX , cY+1) )
+					{
+					dir=1;
+					direction(3);
+					System.out.println("na bongdsdha ");
+					}
+			
+			if(dir!=1)		
+			if(transformX + 1 <= 3 )
+				if(!w.isVisited(cX , cY-1) )
+					{
+					dir=1;
+					direction(4);
+					}
+				if(dir==1)
+				{   
+					pa=0;
+					path(map, a, transformX, transformY, -1, 0);
+				}
 			return;
-		} else 
-			
-		if(path==1)
-		{  
-			
-			if(k<fp)
-				direction(b[k]);
-			
-			k++;
-			if(k==fp) {
-				path=0;
-			k=1;}
-			
-		}
-		
+		} 
 			
 			
 		          
 		else
-		{
+		{  
 			
-			
-			
-			
+			System.out.println("plz");
+			for(int i=0;i<4;i++)
+			{
+				for(int j=0;j<4;j++)
+					System.out.print(map[i][j]);
+				System.out.println();
+			}
+
+			System.out.println(transformY);
 			int count = 0, x1 = 0, y1 = 0;
               int dir=0;
+              
 			int[] a = new int[50];
-			System.out.println(map[2][1]);
 			if (map[transformX][transformY] != -4 && map[transformX][transformY] != -5
-					&& map[transformX][transformY] != -7)
+					&& map[transformX][transformY] != -7 && map[transformX][transformY] != -2 )
 				map[transformX][transformY] = 1;
-
+	
 			if (transformX - 1 >= 0 && map[transformX - 1][transformY] != -4 && map[transformX - 1][transformY] != -5
 					&& map[transformX - 1][transformY] != -7)
 				map[transformX - 1][transformY] = 1;
@@ -2029,7 +2130,14 @@ public class MyAgent implements Agent {
 			if (transformY - 1 >= 0 && map[transformX][transformY - 1] != -4 && map[transformX][transformY - 1] != -5
 					&& map[transformX][transformY - 1] != -7)
 				map[transformX][transformY - 1] = 1;
-			System.out.println("na bondha 2");
+			System.out.println("transformY");
+	
+			for(int i=0;i<4;i++)
+			{
+				for(int j=0;j<4;j++)
+					System.out.print(map[i][j]);
+				System.out.println();
+			}
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					if (map[i][j] == -4) {
@@ -2073,7 +2181,14 @@ public class MyAgent implements Agent {
 					count = 0;
 				}
 			}
-			System.out.println("na bondha 1");
+			for(int i=0;i<4;i++)
+			{
+				for(int j=0;j<4;j++)
+					System.out.print(map[i][j]);
+				System.out.println();
+			}
+			
+			System.out.println(path);
 			System.out.println(map[2][1]);
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
@@ -2123,7 +2238,8 @@ public class MyAgent implements Agent {
 			
 			pa = 0;
 			count = 0;
-			System.out.println("na bondha ");
+			System.out.println("na bondhadtrfgyuihojpk[lp ");
+			System.out.print(transformX);
 			if(!w.isVisited(cX , cY+1))
 				System.out.println();
 			for(int i=0;i<4;i++)
@@ -2163,26 +2279,44 @@ public class MyAgent implements Agent {
 					}
 				
 			if(dir!=1)
+			{ 
+				pa=0;
 			   path(map, a, transformX, transformY, -1, 0);
+			}
+			
+			System.out.println("dfghjksdfghjsdfghjdfghjdfghjkl78152552");
+			System.out.println("dfghjksdfghjsdfghjdfghjdfghjkl78152552");
+			System.out.println("dfghjksdfghjsdfghjdfghjdfghjkl78152552");
 			System.out.println("dfghjksdfghjsdfghjdfghjdfghjkl78152552");
 		    if(dir!=1)
 			if (pa != 1)
 				for (int i = 0; i < 4; i++)
 					for (int j = 0; j < 4; j++)
-						if (map[i][j] == 0)
+						if (!w.isVisited(i+1, j+1))
 							count++;
+		    
 		    System.out.println("dfghjksdfghjsdfghjdfghjdfghjkl7815255212345678");
-		    if(dir!=1)
-			if (count <= 2 ) {
+		    for(int i=0;i<=fp;i++)
+		    	System.out.println(pa);
+		    for(int i=0;i<4;i++)
+			{
+				for(int j=0;j<4;j++)
+					
+				System.out.println();
+			}
+		    if(dir!=1 && pa==0)
+			if (count <= 2 ) 
+			{
 				for (int i = 0; i < 4; i++)
 					for (int j = 0; j < 4; j++)
-						if (map[i][j] == 0) {
+						if (!w.isVisited(i+1, j+1)) 
+						{
 							minscore = 100;
 							System.out.println("dfghjksdfghjsdfghjdfghjdfghjkl781");
 							pathDestination(map, a, transformX, transformY, -1, 0, 0, i, j);
 							System.out.println(pd);
-							for(int o=0;o<=pd;o++)
-						      switch (b[o]) {
+						
+						      switch (b[0]) {
 							case 1:
 								direction(1);
 								break;
@@ -2229,7 +2363,7 @@ public class MyAgent implements Agent {
 			}
 			
 		}
-	
+	    }
 		// Test the environment
 		if (w.hasBreeze(cX, cY)) {
 			System.out.println("I am in a Breeze");

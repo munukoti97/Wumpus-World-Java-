@@ -7,6 +7,7 @@ package wumpusworld;
  * @author Johan Hagelbäck
  */
 public class MyAgent implements Agent {
+
 	private World w;
 	int rnd;
 	int wumpus = 0, pa = 0, pb = 0, minvalue = 100, t = 1, minscore = 100, k1, op, k = 1, fp = 0;
@@ -26,6 +27,11 @@ public class MyAgent implements Agent {
 		w = world;
 	}
 
+//-----------------------------------------------------------------
+
+	// Direct Method which takes integer as input
+	// [ possible values :1-Right,2-Left,3-Up,4-down]
+	// 12+4 possibilities
 	public void direction(int x) {
 		int i = 0, dif;
 
@@ -46,6 +52,7 @@ public class MyAgent implements Agent {
 			i = 4;
 		}
 		dif = i - x;
+
 		if (dif == 0)
 			w.doAction(World.A_MOVE);
 		if ((i == 1 && x == 2) || (x == 1 && i == 2) || (i == 3 && x == 4) || (x == 3 && i == 4)) {
@@ -67,6 +74,11 @@ public class MyAgent implements Agent {
 
 	}
 
+// -----------------------------------------------------------------
+
+	// Shoot arrow method which takes direction as input shoots the wumpus
+	// [ possible values :1-Right,2-Left,3-Up,4-down]
+	// 12+4 possibilities
 	public void arrow(int x) {
 		int i = 0, dif;
 
@@ -108,6 +120,12 @@ public class MyAgent implements Agent {
 
 	}
 
+//-------------------------------------------------------------------------------------------	
+
+	// it will provide a shortest path between the current node and destination node
+	// this method is used when the game is left with very less unvisited nodes.
+	// and also it is safe path
+	// it will fall on pit if there is no path exists
 	public void pathDestination(int[][] map, int[] a, int x, int y, int c1, int move, int score, int fx, int fd) {
 
 		int k;
@@ -209,6 +227,11 @@ public class MyAgent implements Agent {
 		}
 	}
 
+//-------------------------------------------------------------------------------------------	
+
+	// if all the surrounded unvisited nodes contain breezes it gives the optimal
+	// path with less probability
+
 	public void pathbreeze(int[][] map, int[] a, int x, int y, int c1, int move) {
 		int l = 0;
 
@@ -246,20 +269,6 @@ public class MyAgent implements Agent {
 				case 4: // down
 					direction(4);
 					break;
-				case 5: // shoot
-					w.doAction(World.A_SHOOT);
-					break;
-				case 6:
-					w.doAction(World.A_SHOOT);
-					break;
-				case 7:
-					w.doAction(World.A_SHOOT);
-					break;
-				case 8:
-					w.doAction(World.A_SHOOT);
-					break;
-				default: // random
-					break;
 				}
 
 			}
@@ -287,24 +296,6 @@ public class MyAgent implements Agent {
 					break;
 				case 4: // down
 					direction(4);
-					break;
-				case 5: // shoot
-
-					w.doAction(World.A_SHOOT);
-					break;
-				case 6:
-
-					w.doAction(World.A_SHOOT);
-					break;
-				case 7:
-
-					w.doAction(World.A_SHOOT);
-					break;
-				case 8:
-
-					w.doAction(World.A_SHOOT);
-					break;
-				default: // random
 					break;
 				}
 
@@ -390,6 +381,9 @@ public class MyAgent implements Agent {
 
 	}
 
+//-------------------------------------------------------------------------------------------	
+
+	// it will find the best path to unvisited safe node.
 	public void path(int[][] map, int[] a, int x, int y, int c1, int move) {
 
 		if (x <= 3 && y <= 3 && x >= 0 && y >= 0)
@@ -403,9 +397,6 @@ public class MyAgent implements Agent {
 					fp = c1;
 					path = 1;
 				}
-				System.out.println(c1);
-				for (int i = 0; i <= c1; i++)
-					System.out.println(a[i]);
 
 				switch (a[0]) {
 				case 1:
@@ -419,24 +410,6 @@ public class MyAgent implements Agent {
 					break;
 				case 4: // down
 					direction(4);
-					break;
-				case 5: // shoot
-
-					w.doAction(World.A_SHOOT);
-					break;
-				case 6:
-
-					w.doAction(World.A_SHOOT);
-					break;
-				case 7:
-
-					w.doAction(World.A_SHOOT);
-					break;
-				case 8:
-
-					w.doAction(World.A_SHOOT);
-					break;
-				default: // random
 					break;
 				}
 				return;
@@ -525,6 +498,11 @@ public class MyAgent implements Agent {
 
 	}
 
+//-------------------------------------------------------------------------------------------	
+
+	// if the box contains both the breeze and stench the methid will be executed
+	// will see the probabilities of adjacent blocks and move accordingly
+	// and update the probabilities to the adjacent boxes.
 	public void breezeAndStrenchMethod(int[][] map, int cX, int cY, int x, int y) {
 		int count = 0, Y = 0, X = 0, t1 = 0, d = 0, count1 = 0, d1 = 0;
 
@@ -628,7 +606,20 @@ public class MyAgent implements Agent {
 			}
 		}
 		if (x == 3 && y == 0) {
-			direction(1);
+			arrow(1);
+			if (w.hasBreeze(cX, cY) && w.hasStench(cX, cY)) {
+				direction(1);
+				map[3][1] = 3;
+				map[2][0] = 2;
+				map[3][0] = -4;
+
+			} else {
+				direction(1);
+				map[3][1] = 2;
+				map[2][0] = 2;
+				map[3][0] = 4;
+
+			}
 			return;
 		}
 
@@ -840,6 +831,10 @@ public class MyAgent implements Agent {
 		}
 	}
 
+//-------------------------------------------------------------------------------------------	
+
+	// calculating the probabilites of adjacent blocks are calculated and updated
+	// when the box contains breeze.
 	public void breezeMethod(int[][] map, int cX, int cY, int x, int y) {
 
 		int count = 0, t1 = 0, d = 0, X = 0, Y = 0;
@@ -1081,6 +1076,10 @@ public class MyAgent implements Agent {
 
 	}
 
+//-------------------------------------------------------------------------------------------	
+
+	// all the probabilities of adjacent boxes are updated when the box contains
+	// stench
 	public void strenchMethod(int[][] map, int cX, int cY, int x, int y) {
 
 		int count = 0, Y = 0, X = 0, t1 = 0, d = 0, count1 = 0, d1 = 0;
@@ -1184,6 +1183,23 @@ public class MyAgent implements Agent {
 					}
 				}
 			}
+		}
+		if (x == 3 && y == 0) {
+			arrow(1);
+			if (w.hasStench(cX, cY)) {
+				direction(1);
+				map[3][1] = 1;
+				map[2][0] = 3;
+				map[3][0] = 1;
+
+			} else {
+				direction(1);
+				map[3][1] = 1;
+				map[2][0] = 1;
+				map[3][0] = 1;
+
+			}
+			return;
 		}
 
 		if (count1 == 1) {
@@ -1355,13 +1371,14 @@ public class MyAgent implements Agent {
 					minvalue = 100;
 					pb = 0;
 					t = 1;
-					pathbreeze(map, a, x, y, 0, 0);
+					pathbreeze(map, a, x, y, -1, 0);
 				}
 			}
 		}
 
 	}
 
+//-------------------------------------------------------------------------------------------	
 	/**
 	 * Asks your solver agent to execute an action.
 	 */
@@ -1372,10 +1389,45 @@ public class MyAgent implements Agent {
 		int cX = w.getPlayerX();
 		int cY = w.getPlayerY();
 
+		// transformed according to the map array
 		int transformX = 4 - cY;
 		int transformY = cX - 1;
 
+		// -----------------------------------------------------------------
+
+		// code given before
+		// Test the environment
+		if (w.hasBreeze(cX, cY)) {
+			System.out.println("I am in a Breeze");
+		}
+		if (w.hasStench(cX, cY)) {
+			System.out.println("I am in a Stench");
+		}
+		if (w.hasPit(cX, cY)) {
+			System.out.println("I am in a Pit");
+		}
+		if (w.getDirection() == World.DIR_RIGHT) {
+			System.out.println("I am facing Right");
+		}
+		if (w.getDirection() == World.DIR_LEFT) {
+			System.out.println("I am facing Left");
+		}
+		if (w.getDirection() == World.DIR_UP) {
+			System.out.println("I am facing Up");
+		}
+		if (w.getDirection() == World.DIR_DOWN) {
+			System.out.println("I am facing Down");
+		}
+
+		// -----------------------------------------------------------------
+
 		if (path == 1) {
+
+			if (w.hasGlitter(cX, cY)) {
+				w.doAction(World.A_GRAB);
+				return;
+			}
+
 			if (k <= (fp))
 				direction(b[k]);
 			k++;
@@ -1385,6 +1437,20 @@ public class MyAgent implements Agent {
 			}
 
 		} else {
+
+			if (w.hasStench(cX, cY) && w.isInPit()) {
+
+				if (w.hasGlitter(cX, cY)) {
+					w.doAction(World.A_GRAB);
+					return;
+				}
+
+				map[transformX][transformY] = -2;
+				w.doAction(World.A_CLIMB);
+				strenchMethod(map, cX, cY, transformX, transformY);
+
+			}
+
 			if (w.hasGlitter(cX, cY) && w.hasBreeze(cX, cY)) {
 				w.doAction(World.A_GRAB);
 				return;
@@ -1403,6 +1469,7 @@ public class MyAgent implements Agent {
 				return;
 			} else if (w.isInPit()) {
 				int dir = 0;
+				int count = 0;
 				int[] a = new int[50];
 				map[transformX][transformY] = -2;
 
@@ -1435,6 +1502,62 @@ public class MyAgent implements Agent {
 					pa = 0;
 					path(map, a, transformX, transformY, -1, 0);
 				}
+				if (dir != 1)
+					if (pa != 1)
+						for (int i = 0; i < 4; i++)
+							for (int j = 0; j < 4; j++)
+								if (!w.isVisited(i + 1, j + 1))
+									count++;
+				if (dir != 1 && pa == 0)
+					if (count <= 2) {
+						for (int i = 0; i < 4; i++)
+							for (int j = 0; j < 4; j++)
+								if (!w.isVisited(i + 1, j + 1)) {
+									minscore = 100;
+									pathDestination(map, a, transformX, transformY, -1, 0, 0, i, j);
+
+									switch (b[0]) {
+									case 1:
+										direction(1);
+										break;
+									case 2: // left
+										direction(2);
+										break;
+									case 3: // up
+										direction(3);
+										break;
+									case 4: // down
+										direction(4);
+										break;
+									case 5: // shoot
+
+										w.doAction(World.A_SHOOT);
+										break;
+									case 6:
+
+										w.doAction(World.A_SHOOT);
+										break;
+									case 7:
+
+										w.doAction(World.A_SHOOT);
+										break;
+									case 8:
+
+										w.doAction(World.A_SHOOT);
+										break;
+									default: // random
+										break;
+									}
+
+								}
+
+					} else if (pa != 1) {
+						minvalue = 100;
+						pb = 0;
+						t = 1;
+						pathbreeze(map, a, transformX, transformY, -1, 0);
+
+					}
 				return;
 			}
 
@@ -1625,30 +1748,6 @@ public class MyAgent implements Agent {
 
 			}
 		}
-		// Test the environment
-		if (w.hasBreeze(cX, cY)) {
-			System.out.println("I am in a Breeze");
-		}
-		if (w.hasStench(cX, cY)) {
-			System.out.println("I am in a Stench");
-		}
-		if (w.hasPit(cX, cY)) {
-			System.out.println("I am in a Pit");
-		}
-		if (w.getDirection() == World.DIR_RIGHT) {
-			System.out.println("I am facing Right");
-		}
-		if (w.getDirection() == World.DIR_LEFT) {
-			System.out.println("I am facing Left");
-		}
-		if (w.getDirection() == World.DIR_UP) {
-			System.out.println("I am facing Up");
-		}
-		if (w.getDirection() == World.DIR_DOWN) {
-			System.out.println("I am facing Down");
-		}
-
-		// decide next move
 
 	}
 
